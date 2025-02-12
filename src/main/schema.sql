@@ -1,5 +1,12 @@
 use glam_db;
 
+
+CREATE TABLE IF NOT EXISTS user(
+	id_user INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE
+);
+
+
 CREATE TABLE IF NOT EXISTS product(
 	id_product int PRIMARY KEY NOT NULL,
     title_product VARCHAR(255),
@@ -8,11 +15,6 @@ CREATE TABLE IF NOT EXISTS product(
     stock int
 );
 
-
-CREATE TABLE IF NOT EXISTS user(
-	id_user INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE
-);
 
 
 
