@@ -15,11 +15,11 @@ public class User {
 
 
 
-    public int getId_user() {
+    public int getIdUser() {
         return idUser;
     }
 
-    public void setId_user(int idUser) {
+    public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
 
