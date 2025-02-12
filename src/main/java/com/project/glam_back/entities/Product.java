@@ -1,4 +1,4 @@
-package entities;
+package com.project.glam_back.entities;
 
 public class Product {
 
