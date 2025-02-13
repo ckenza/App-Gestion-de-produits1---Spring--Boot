@@ -44,7 +44,7 @@ public class ProductDao {
 
 
     public Product save(Product product) {
-        String sql = "INSERT INTO product (titleProduct, imageUrl, price, stock) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO product (title_product, image_url, price, stock) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql, product.getTitleProduct(), product.getImageUrl(), product.getPrice(), product.getStock());
 
         String sqlGetId = "SELECT LAST_INSERT_ID()";

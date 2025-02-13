@@ -1,10 +1,17 @@
 package com.project.glam_back.entities;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class InvoiceItem {
 
-
+    @NotNull
     private int idInvoice;
+
+    @NotNull
     private int idProduct;
+
+    @Positive(message = "Au moins un exemplaire")
     private int quantity;
 
 

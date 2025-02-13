@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS user(
 
 
 CREATE TABLE IF NOT EXISTS product(
-	id_product int PRIMARY KEY NOT NULL,
+	id_product int AUTO_INCREMENT PRIMARY KEY NOT NULL,
     title_product VARCHAR(255),
     image_url VARCHAR(255),
     price double,

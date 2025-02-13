@@ -1,12 +1,20 @@
 package com.project.glam_back.entities;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PositiveOrZero;
+
 import java.util.Date;
 
 public class Invoice {
 
-
+    @NotNull
     private int idInvoice;
+
+    @Past(message = "La date doit être au passé")
     private Date date;
+
+    @PositiveOrZero(message = "la valeur doit être au desuus de zéro")
     private Double total;
 
 

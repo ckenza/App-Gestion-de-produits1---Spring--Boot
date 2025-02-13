@@ -1,8 +1,14 @@
 package com.project.glam_back.entities;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
 public class User {
 
+    @NotNull
     private int idUser;
+
+    @Email(message = "le format de l'email n'est pas conforme")
     private String email;
 
 

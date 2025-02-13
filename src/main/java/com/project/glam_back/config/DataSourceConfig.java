@@ -1,4 +1,4 @@
-package config;
+package com.project.glam_back.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

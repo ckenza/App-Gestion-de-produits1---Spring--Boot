@@ -2,6 +2,7 @@ package com.project.glam_back.controllers;
 
 import com.project.glam_back.daos.InvoiceDao;
 import com.project.glam_back.entities.Invoice;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/invoices")
+@RequestMapping("/invoice")
 public class InvoiceController {
 
 
@@ -36,7 +37,7 @@ public class InvoiceController {
 
 
     @PostMapping
-    public ResponseEntity<Invoice> createInvoice(@RequestBody Invoice invoice) {
+    public ResponseEntity<Invoice> createInvoice(@Valid @RequestBody Invoice invoice) {
         Invoice createdInvoice = invoiceDao.save(invoice);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdInvoice);
     }
