@@ -33,6 +33,14 @@ public class ProductDao {
 
 
 
+    public List<Product> searchProduct(String query){
+        String sql = "SELECT * FROM product WHERE LOWER(title_product) LIKE LOWER(?) ";
+        return jdbcTemplate.query(sql,productRowMapper, "%" + query + "%");
+    }
+
+
+
+
     public Product findById(int idProduct) {
         String sql = "SELECT * FROM product WHERE id_product = ?";
         return jdbcTemplate.query(sql, productRowMapper, idProduct)
