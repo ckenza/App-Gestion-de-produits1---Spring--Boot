@@ -22,7 +22,7 @@ public class InvoiceItemController {
 
 
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<InvoiceItem>> getAllInvoiceItems() {
         return ResponseEntity.ok(invoiceItemDao.findAll());
     }

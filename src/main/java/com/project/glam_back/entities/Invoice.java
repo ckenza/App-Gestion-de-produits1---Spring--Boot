@@ -14,7 +14,7 @@ public class Invoice {
     @Past(message = "La date doit être au passé")
     private Date date;
 
-    @PositiveOrZero(message = "la valeur doit être au desuus de zéro")
+    @PositiveOrZero(message = "la valeur doit être au dessus de zéro")
     private Double total;
 
 

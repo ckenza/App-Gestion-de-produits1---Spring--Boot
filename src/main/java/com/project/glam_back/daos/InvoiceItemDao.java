@@ -17,8 +17,8 @@ public class InvoiceItemDao {
     }
 
     private final RowMapper<InvoiceItem> invoiceItemRowMapper = (rs, rowNum) -> new InvoiceItem(
-            rs.getInt("idInvoice"),
-            rs.getInt("idProduct"),
+            rs.getInt("id_invoice"),
+            rs.getInt("id_product"),
             rs.getInt("quantity")
     );
 
@@ -32,7 +32,7 @@ public class InvoiceItemDao {
 
 
     public InvoiceItem findById(int idInvoice, int idProduct) {
-        String sql = "SELECT * FROM invoice_item WHERE idInvoice = ? AND idProduct = ?";
+        String sql = "SELECT * FROM invoice_item WHERE id_invoice = ? AND id_product = ?";
         return jdbcTemplate.query(sql, invoiceItemRowMapper, idInvoice, idProduct)
                 .stream()
                 .findFirst()
@@ -42,8 +42,8 @@ public class InvoiceItemDao {
 
 
     public InvoiceItem save(InvoiceItem invoiceItem) {
-        String sql = "INSERT INTO invoice_item (idInvoice, idProduct, quantity) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, invoiceItem.getIdInvoice(), invoiceItem.getIdProduct(), invoiceItem.getQuantity());
+        String sql = "INSERT INTO invoice_item (id_product, quantity) VALUES (?, ?)";
+        jdbcTemplate.update(sql,invoiceItem.getIdProduct(), invoiceItem.getQuantity());
         return invoiceItem;
     }
 
@@ -54,7 +54,7 @@ public class InvoiceItemDao {
             throw new RuntimeException("L'élément de facture avec idInvoice: " + idInvoice + " et idProduct: " + idProduct + " n'existe pas");
         }
 
-        String sql = "UPDATE invoice_item SET quantity = ? WHERE idInvoice = ? AND idProduct = ?";
+        String sql = "UPDATE invoice_item SET quantity = ? WHERE id_invoice = ? AND id_product = ?";
         int rowsAffected = jdbcTemplate.update(sql, invoiceItem.getQuantity(), idInvoice, idProduct);
 
         if (rowsAffected <= 0) {
@@ -68,7 +68,7 @@ public class InvoiceItemDao {
 
 
     public boolean delete(int idInvoice, int idProduct) {
-        String sql = "DELETE FROM invoice_item WHERE idInvoice = ? AND idProduct = ?";
+        String sql = "DELETE FROM invoice_item WHERE id_invoice = ? AND id_product = ?";
         int rowsAffected = jdbcTemplate.update(sql, idInvoice, idProduct);
         return rowsAffected > 0;
     }
@@ -77,7 +77,7 @@ public class InvoiceItemDao {
 
 
     private boolean invoiceItemExists(int idInvoice, int idProduct) {
-        String checkSql = "SELECT COUNT(*) FROM invoice_item WHERE idInvoice = ? AND idProduct = ?";
+        String checkSql = "SELECT COUNT(*) FROM invoice_item WHERE id_invoice = ? AND id_product = ?";
         int count = jdbcTemplate.queryForObject(checkSql, Integer.class, idInvoice, idProduct);
         return count > 0;
     }

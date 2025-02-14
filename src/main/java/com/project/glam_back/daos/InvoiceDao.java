@@ -17,7 +17,7 @@ public class InvoiceDao {
     }
 
     private final RowMapper<Invoice> invoiceRowMapper = (rs, rowNum) -> new Invoice(
-            rs.getInt("idInvoice"),
+            rs.getInt("id_invoice"),
             rs.getDate("date"),
             rs.getDouble("total")
     );
@@ -32,7 +32,7 @@ public class InvoiceDao {
 
 
     public Invoice findById(int idInvoice) {
-        String sql = "SELECT * FROM invoice WHERE idInvoice = ?";
+        String sql = "SELECT * FROM invoice WHERE id_invoice = ?";
         return jdbcTemplate.query(sql, invoiceRowMapper, idInvoice)
                 .stream()
                 .findFirst()
@@ -59,7 +59,7 @@ public class InvoiceDao {
             throw new RuntimeException("Facture avec l'ID : " + id + " n'existe pas");
         }
 
-        String sql = "UPDATE invoice SET total = ? WHERE idInvoice = ?";
+        String sql = "UPDATE invoice SET total = ? WHERE id_invoice = ?";
         int rowsAffected = jdbcTemplate.update(sql, invoice.getTotal(), id);
 
         if (rowsAffected <= 0) {
@@ -72,7 +72,7 @@ public class InvoiceDao {
 
 
     public boolean delete(int id) {
-        String sql = "DELETE FROM invoice WHERE idInvoice = ?";
+        String sql = "DELETE FROM invoice WHERE id_invoice = ?";
         int rowsAffected = jdbcTemplate.update(sql, id);
         return rowsAffected > 0;
     }
@@ -80,7 +80,7 @@ public class InvoiceDao {
 
 
     private boolean invoiceExists(int id) {
-        String checkSql = "SELECT COUNT(*) FROM invoice WHERE idInvoice = ?";
+        String checkSql = "SELECT COUNT(*) FROM invoice WHERE id_invoice = ?";
         int count = jdbcTemplate.queryForObject(checkSql, Integer.class, id);
         return count > 0;
     }

@@ -17,9 +17,9 @@ public class ProductDao {
     }
 
     private final RowMapper<Product> productRowMapper = (rs, rowNum) -> new Product(
-            rs.getInt("idProduct"),
-            rs.getString("titleProduct"),
-            rs.getString("imageUrl"),
+            rs.getInt("id_product"),
+            rs.getString("title_product"),
+            rs.getString("image_url"),
             rs.getDouble("price"),
             rs.getInt("stock")
     );
@@ -34,7 +34,7 @@ public class ProductDao {
 
 
     public Product findById(int idProduct) {
-        String sql = "SELECT * FROM product WHERE idProduct = ?";
+        String sql = "SELECT * FROM product WHERE id_product = ?";
         return jdbcTemplate.query(sql, productRowMapper, idProduct)
                 .stream()
                 .findFirst()
@@ -61,7 +61,7 @@ public class ProductDao {
             throw new RuntimeException("Produit avec l'ID : " + id + " n'existe pas");
         }
 
-        String sql = "UPDATE product SET titleProduct = ?, imageUrl = ?, price = ?, stock = ? WHERE idProduct = ?";
+        String sql = "UPDATE product SET titleProduct = ?, imageUrl = ?, price = ?, stock = ? WHERE id_product = ?";
         int rowsAffected = jdbcTemplate.update(sql, product.getTitleProduct(), product.getImageUrl(), product.getPrice(), product.getStock(), id);
 
         if (rowsAffected <= 0) {
@@ -74,7 +74,7 @@ public class ProductDao {
 
 
     public boolean delete(int id) {
-        String sql = "DELETE FROM product WHERE idProduct = ?";
+        String sql = "DELETE FROM product WHERE id_product = ?";
         int rowsAffected = jdbcTemplate.update(sql, id);
         return rowsAffected > 0;
     }
@@ -82,7 +82,7 @@ public class ProductDao {
 
 
     private boolean productExists(int id) {
-        String checkSql = "SELECT COUNT(*) FROM product WHERE idProduct = ?";
+        String checkSql = "SELECT COUNT(*) FROM product WHERE id_product = ?";
         int count = jdbcTemplate.queryForObject(checkSql, Integer.class, id);
         return count > 0;
     }

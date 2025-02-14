@@ -18,7 +18,7 @@ public class UserDao {
     }
 
     private final RowMapper<User> userRowMapper = (rs, _) -> new User(
-            rs.getInt("idUser"),
+            rs.getInt("id_user"),
             rs.getString("email")
     );
 
