@@ -4,51 +4,61 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.PositiveOrZero;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.sql.Date;
 
 public class Invoice {
 
     @NotNull
-    private int idInvoice;
+    private int id;
+
+    @NotNull
+    private int idUser;
 
     @Past(message = "La date doit être au passé")
     private Date date;
 
     @PositiveOrZero(message = "la valeur doit être au dessus de zéro")
-    private Double total;
+    private BigDecimal total;
 
 
     public Invoice(){}
-    public Invoice(int idInvoice, Date date, Double total){
-        this.idInvoice = idInvoice;
+    public Invoice(int id, int idUser, Date date, BigDecimal total){
+        this.id = id;
+        this.idUser = idUser;
         this.date = date;
         this.total = total;
     }
 
-
-    public int getIdInvoice() {
-        return idInvoice;
+    public int getId() {
+        return id;
     }
 
-    public void setIdInvoice(int idInvoice) {
-        this.idInvoice = idInvoice;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    public int getIdUser() {
+        return idUser;
+    }
 
-    public Date getDate() {
+    public void setIdUser(int idUser) {
+        this.idUser = idUser;
+    }
+
+    public java.sql.Date getDate() {
         return date;
     }
-
 
     public void setDate(Date date) {
         this.date = date;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 }

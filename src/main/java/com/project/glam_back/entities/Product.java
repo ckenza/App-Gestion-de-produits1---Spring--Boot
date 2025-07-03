@@ -3,21 +3,23 @@ package com.project.glam_back.entities;
 import jakarta.validation.constraints.*;
 import org.hibernate.validator.constraints.URL;
 
+import java.math.BigDecimal;
+
 public class Product {
 
     @NotNull(message = "L'id ne peut pas être null")
-    private int idProduct;
+    private int id;
 
     @NotBlank(message = "Entrer le titre du produit")
     @Size(min =3, message = "3 caractères minimum")
-    private String titleProduct;
+    private String title;
 
     @URL(message = "le format de l'url n'est pas conforme")
-    private String imageUrl;
+    private String image;
 
     @NotNull(message = "Entrer le prix du produit")
     @Positive(message = "Le prix doit être au dessus de zéro")
-    private Double price;
+    private BigDecimal price;
 
     @PositiveOrZero(message = "Le stock doit être supérieur ou égal à 0")
     private int stock;
@@ -26,48 +28,48 @@ public class Product {
 
     public Product(){}
 
-    public Product(int idProduct, String titleProduct, String imageUrl, Double price, int stock){
-        this.idProduct = idProduct;
-        this.titleProduct = titleProduct;
-        this.imageUrl = imageUrl;
+    public Product(int id, String title, String image, BigDecimal price, int stock){
+        this.id = id;
+        this.title = title;
+        this.image = image;
         this.price = price;
         this.stock = stock;
     }
 
 
-    public int getIdProduct() {
-        return idProduct;
+    public int getId() {
+        return id;
     }
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
-
-
-    public String getTitleProduct() {
-        return titleProduct;
-    }
-
-    public void setTitleProduct(String titleProduct) {
-        this.titleProduct = titleProduct;
+    public void setId(int id) {
+        this.id = id;
     }
 
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public String getImage() {
+        return image;
     }
 
 
-    public Double getPrice() {
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
