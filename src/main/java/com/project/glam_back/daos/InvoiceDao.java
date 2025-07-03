@@ -3,8 +3,11 @@ package com.project.glam_back.daos;
 import com.project.glam_back.entities.Invoice;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
-
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 
 @Repository
@@ -17,11 +20,11 @@ public class InvoiceDao {
     }
 
     private final RowMapper<Invoice> invoiceRowMapper = (rs, rowNum) -> new Invoice(
-            rs.getInt("id_invoice"),
+            rs.getInt("id"),
+            rs.getInt("id_user"),
             rs.getDate("date"),
-            rs.getDouble("total")
+            rs.getBigDecimal("total")
     );
-
 
 
     public List<Invoice> findAll() {
@@ -30,9 +33,8 @@ public class InvoiceDao {
     }
 
 
-
     public Invoice findById(int idInvoice) {
-        String sql = "SELECT * FROM invoice WHERE id_invoice = ?";
+        String sql = "SELECT * FROM invoice WHERE id = ?";
         return jdbcTemplate.query(sql, invoiceRowMapper, idInvoice)
                 .stream()
                 .findFirst()
@@ -40,18 +42,20 @@ public class InvoiceDao {
     }
 
 
+    public int save(Invoice invoice) {
+        String sql = "INSERT INTO invoice (id_user, date, total) VALUES (?, ?, ?)";
+        KeyHolder keyHolder = new GeneratedKeyHolder();
 
-    public Invoice save(Invoice invoice) {
-        String sql = "INSERT INTO invoice (date, total) VALUES (?, ?)";
-        jdbcTemplate.update(sql, invoice.getDate(), invoice.getTotal());
+        jdbcTemplate.update(connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    ps.setInt(1, invoice.getIdUser());
+                    ps.setDate(2, invoice.getDate());
+                    ps.setBigDecimal(3, invoice.getTotal());
+                    return ps;
+                }, keyHolder);
 
-        String sqlGetId = "SELECT LAST_INSERT_ID()";
-        int id = jdbcTemplate.queryForObject(sqlGetId, Integer.class);
-
-        invoice.setIdInvoice(id);
-        return invoice;
+        return keyHolder.getKey() != null ? keyHolder.getKey().intValue() : 0;
     }
-
 
 
     public Invoice update(int id, Invoice invoice) {
@@ -59,7 +63,7 @@ public class InvoiceDao {
             throw new RuntimeException("Facture avec l'ID : " + id + " n'existe pas");
         }
 
-        String sql = "UPDATE invoice SET total = ? WHERE id_invoice = ?";
+        String sql = "UPDATE invoice SET total = ? WHERE id = ?";
         int rowsAffected = jdbcTemplate.update(sql, invoice.getTotal(), id);
 
         if (rowsAffected <= 0) {
@@ -70,17 +74,15 @@ public class InvoiceDao {
     }
 
 
-
     public boolean delete(int id) {
-        String sql = "DELETE FROM invoice WHERE id_invoice = ?";
+        String sql = "DELETE FROM invoice WHERE id = ?";
         int rowsAffected = jdbcTemplate.update(sql, id);
         return rowsAffected > 0;
     }
 
 
-
     private boolean invoiceExists(int id) {
-        String checkSql = "SELECT COUNT(*) FROM invoice WHERE id_invoice = ?";
+        String checkSql = "SELECT COUNT(*) FROM invoice WHERE id = ?";
         int count = jdbcTemplate.queryForObject(checkSql, Integer.class, id);
         return count > 0;
     }
