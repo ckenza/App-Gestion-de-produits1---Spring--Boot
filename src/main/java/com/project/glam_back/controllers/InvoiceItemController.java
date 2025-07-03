@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/invoice-item")
+@RequestMapping("/invoice_item")
 public class InvoiceItemController {
-
 
     private final InvoiceItemDao invoiceItemDao;
 
@@ -20,39 +19,33 @@ public class InvoiceItemController {
         this.invoiceItemDao = invoiceItemDao;
     }
 
-
-
     @GetMapping("/all")
     public ResponseEntity<List<InvoiceItem>> getAllInvoiceItems() {
         return ResponseEntity.ok(invoiceItemDao.findAll());
     }
 
 
-
-    @GetMapping("/{idInvoice}/{idProduct}")
+    @GetMapping("/{id_invoice}/{id_product}")
     public ResponseEntity<InvoiceItem> getInvoiceItemById(@PathVariable int idInvoice, @PathVariable int idProduct) {
         return ResponseEntity.ok(invoiceItemDao.findById(idInvoice, idProduct));
     }
 
 
-
-    @PostMapping
-    public ResponseEntity<InvoiceItem> createInvoiceItem(@Valid @RequestBody InvoiceItem invoiceItem) {
-        InvoiceItem createdInvoiceItem = invoiceItemDao.save(invoiceItem);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdInvoiceItem);
+   @PostMapping("/{idInvoice}")
+    public ResponseEntity<String> createInvoiceItem(@PathVariable int idInvoice, @RequestBody List<InvoiceItem> items) {
+        invoiceItemDao.save(idInvoice, items);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Détail de la facture enregistrés");
     }
 
 
-
-    @PutMapping("/{idInvoice}/{idProduct}")
+    @PutMapping("/{id_invoice}/{id_product}")
     public ResponseEntity<InvoiceItem> updateInvoiceItem(@PathVariable int idInvoice, @PathVariable int idProduct, @RequestBody InvoiceItem invoiceItem) {
         InvoiceItem updatedInvoiceItem = invoiceItemDao.update(idInvoice, idProduct, invoiceItem);
         return ResponseEntity.ok(updatedInvoiceItem);
     }
 
 
-
-    @DeleteMapping("/{idInvoice}/{idProduct}")
+    @DeleteMapping("/{id_invoice}/{id_product}")
     public ResponseEntity<Void> deleteInvoiceItem(@PathVariable int idInvoice, @PathVariable int idProduct) {
         if (invoiceItemDao.delete(idInvoice, idProduct)) {
             return ResponseEntity.noContent().build();

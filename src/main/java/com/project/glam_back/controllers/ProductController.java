@@ -34,11 +34,10 @@ public class ProductController {
 
 
 
-    @GetMapping("/{idProduct}")
-    public ResponseEntity<Product> getProductById(@PathVariable int idProduct) {
-        return ResponseEntity.ok(productDao.findById(idProduct));
+    @GetMapping("/{id}")
+    public ResponseEntity<Product> getProductById(@PathVariable int id) {
+        return ResponseEntity.ok(productDao.findById(id));
     }
-
 
 
     @PostMapping
@@ -48,18 +47,16 @@ public class ProductController {
     }
 
 
-
-    @PutMapping("/{idProduct}")
-    public ResponseEntity<Product> updateProduct(@PathVariable int idProduct, @RequestBody Product product) {
-        Product updatedProduct = productDao.update(idProduct, product);
+    @PutMapping("/{id}")
+    public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody Product product) {
+        Product updatedProduct = productDao.update(id, product);
         return ResponseEntity.ok(updatedProduct);
     }
 
 
-
-    @DeleteMapping("/{idProduct}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable int idProduct) {
-        if (productDao.delete(idProduct)) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable int id) {
+        if (productDao.delete(id)) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();

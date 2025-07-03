@@ -1,6 +1,7 @@
 package com.project.glam_back.daos;
 
 import com.project.glam_back.entities.InvoiceItem;
+import jakarta.validation.Valid;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -19,16 +20,15 @@ public class InvoiceItemDao {
     private final RowMapper<InvoiceItem> invoiceItemRowMapper = (rs, rowNum) -> new InvoiceItem(
             rs.getInt("id_invoice"),
             rs.getInt("id_product"),
-            rs.getInt("quantity")
+            rs.getInt("quantity"),
+            rs.getBigDecimal("unit_price")
     );
-
 
 
     public List<InvoiceItem> findAll() {
         String sql = "SELECT * FROM invoice_item";
         return jdbcTemplate.query(sql, invoiceItemRowMapper);
     }
-
 
 
     public InvoiceItem findById(int idInvoice, int idProduct) {
@@ -40,13 +40,19 @@ public class InvoiceItemDao {
     }
 
 
+    public void save(int invoiceId, List<InvoiceItem> items) {
+        String sql = "INSERT INTO invoice_item (id_invoice, id_product, quantity, unit_price) VALUES (?, ?, ?, ?)";
 
-    public InvoiceItem save(InvoiceItem invoiceItem) {
-        String sql = "INSERT INTO invoice_item (id_product, quantity) VALUES (?, ?)";
-        jdbcTemplate.update(sql,invoiceItem.getIdProduct(), invoiceItem.getQuantity());
-        return invoiceItem;
+        for (InvoiceItem item : items) {
+            jdbcTemplate.update(
+                    sql,
+                    invoiceId,
+                    item.getIdProduct(),
+                    item.getQuantity(),
+                    item.getUnit_price()
+            );
+        }
     }
-
 
 
     public InvoiceItem update(int idInvoice, int idProduct, InvoiceItem invoiceItem) {
@@ -65,15 +71,11 @@ public class InvoiceItemDao {
     }
 
 
-
-
     public boolean delete(int idInvoice, int idProduct) {
         String sql = "DELETE FROM invoice_item WHERE id_invoice = ? AND id_product = ?";
         int rowsAffected = jdbcTemplate.update(sql, idInvoice, idProduct);
         return rowsAffected > 0;
     }
-
-
 
 
     private boolean invoiceItemExists(int idInvoice, int idProduct) {

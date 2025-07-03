@@ -13,48 +13,38 @@ import java.util.List;
 @RequestMapping("/invoice")
 public class InvoiceController {
 
-
     private final InvoiceDao invoiceDao;
 
     public InvoiceController(InvoiceDao invoiceDao) {
         this.invoiceDao = invoiceDao;
     }
 
-
-
     @GetMapping("/all")
     public ResponseEntity<List<Invoice>> getAllInvoices() {
         return ResponseEntity.ok(invoiceDao.findAll());
     }
 
-
-
-    @GetMapping("/{idInvoice}")
+    @GetMapping("/{id}")
     public ResponseEntity<Invoice> getInvoiceById(@PathVariable int idInvoice) {
         return ResponseEntity.ok(invoiceDao.findById(idInvoice));
     }
 
-
-
     @PostMapping
-    public ResponseEntity<Invoice> createInvoice(@Valid @RequestBody Invoice invoice) {
-        Invoice createdInvoice = invoiceDao.save(invoice);
+    public ResponseEntity<Integer> createInvoice(@Valid @RequestBody Invoice invoice) {
+        int createdInvoice = invoiceDao.save(invoice);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(createdInvoice);
     }
 
-
-
-    @PutMapping("/{idInvoice}")
+    @PutMapping("/{id}")
     public ResponseEntity<Invoice> updateInvoice(@PathVariable int idInvoice, @RequestBody Invoice invoice) {
         Invoice updatedInvoice = invoiceDao.update(idInvoice, invoice);
         return ResponseEntity.ok(updatedInvoice);
     }
 
-
-
-    @DeleteMapping("/{idInvoice}")
-    public ResponseEntity<Void> deleteInvoice(@PathVariable int idInvoice) {
-        if (invoiceDao.delete(idInvoice)) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteInvoice(@PathVariable int id) {
+        if (invoiceDao.delete(id)) {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
